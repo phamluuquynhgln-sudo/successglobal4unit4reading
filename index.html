@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Birthday Party</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: một cột cuộn dọc như phiếu giấy — Bài đọc → Read & answer → Matching → Kết quả */
+:root{
+  --bg:#eef4f0; --paper:#ffffff; --ink:#1d2b3a; --muted:#5d6f7d; --line:#cfdcd5;
+  --leaf:#2f8a5b; --leaf-soft:#dff1e6; --sun:#f2a93b; --sun-soft:#fdf0d9;
+  --navy:#111c37; --gold:#f5cf6b; --bad:#d9534f; --hl:#fff1b8;
+  --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1a17; --paper:#17251f; --ink:#e8f1ec; --muted:#9fb3a9; --line:#2c3f36;
+  --leaf:#5cc48c; --leaf-soft:#1d3a2b; --sun:#f5b955; --sun-soft:#3a2e17;
+  --bad:#ff7b76; --hl:#5a4a12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1a17; --paper:#17251f; --ink:#e8f1ec; --muted:#9fb3a9; --line:#2c3f36;
+  --leaf:#5cc48c; --leaf-soft:#1d3a2b; --sun:#f5b955; --sun-soft:#3a2e17;
+  --bad:#ff7b76; --hl:#5a4a12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.strip{background:var(--navy);color:var(--gold);text-align:center;font:800 11px/1 var(--f-body);letter-spacing:2px;text-transform:uppercase;padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{background:var(--leaf);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar b{font:700 17px/1.2 var(--f-display)}
+.score{font:800 15px var(--f-body);background:rgba(255,255,255,.2);padding:4px 12px;border-radius:99px;font-variant-numeric:tabular-nums;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+header.hero{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.unit{font:700 13px var(--f-body);letter-spacing:2px;text-transform:uppercase;color:var(--leaf)}
+h1{font:800 clamp(30px,7vw,44px)/1.05 var(--f-display);margin:0;text-wrap:balance}
+.cbadge{display:inline-block;background:var(--navy);color:var(--gold);font:800 12px var(--f-body);letter-spacing:1.5px;padding:5px 14px;border-radius:99px}
+.lead{color:var(--muted);margin:0;font-size:15px}
+section.card{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:18px clamp(14px,4vw,24px);display:flex;flex-direction:column;gap:14px}
+.sh{display:flex;align-items:flex-start;gap:12px}
+.num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--sun);color:#1d2b3a;font:800 18px/34px var(--f-display);text-align:center}
+h2{font:800 22px/1.2 var(--f-display);margin:0}
+.vi{font-size:14px;color:var(--muted);margin:2px 0 0}
+.passage p{margin:0 0 8px}
+.passage .s{border-radius:4px;transition:background .3s}
+.passage .s.hl{background:var(--hl);box-shadow:0 0 0 3px var(--hl)}
+.w{border-bottom:2px dotted var(--leaf);cursor:pointer;font-weight:700;color:inherit;background:none;border-top:0;border-left:0;border-right:0;padding:0;font:inherit;font-weight:700}
+.w:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tip{font-size:14px;background:var(--leaf-soft);border-radius:12px;padding:8px 12px;color:var(--ink);min-height:40px}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:800 15px var(--f-body);border:2px solid var(--leaf);background:var(--paper);color:var(--leaf);padding:8px 16px;border-radius:99px;cursor:pointer}
+.btn.solid{background:var(--leaf);color:#fff}
+.q{display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:2px dashed var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.qt{font:700 18px/1.3 var(--f-display)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:700 16px/1.35 var(--f-body);background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.opt .l{flex:none;width:26px;height:26px;border-radius:50%;background:var(--sun-soft);font:800 14px/26px var(--f-body);text-align:center}
+.opt.ok{border-color:var(--leaf);background:var(--leaf-soft)}
+.opt.no{border-color:var(--bad);opacity:.55}
+.opt:disabled{cursor:default}
+.ans{display:none;background:var(--sun-soft);border-radius:12px;padding:8px 12px;font-weight:700}
+.ans.on{display:block}
+.ans small{display:block;font-weight:500;color:var(--muted)}
+.shake{animation:sh .4s}
+@keyframes sh{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.match{position:relative;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);column-gap:clamp(36px,10vw,80px);row-gap:12px;align-items:center}
+.match .col{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+.mi{position:relative;z-index:1;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:700 16px/1.35 var(--f-body);color:var(--ink);text-align:left;cursor:pointer;min-height:56px}
+.mi.left{font:800 18px var(--f-display)}
+.mi.sel{border-color:var(--sun);background:var(--sun-soft)}
+.mi.done{border-color:var(--leaf);background:var(--leaf-soft);cursor:default}
+svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+svg.wires path{fill:none;stroke:var(--leaf);stroke-width:4;stroke-linecap:round}
+.result{text-align:center;align-items:center}
+.result .big{font:800 52px/1 var(--f-display);color:var(--leaf);font-variant-numeric:tabular-nums}
+.result .cbadge{margin-top:4px}
+footer{text-align:center;font-size:12px;color:var(--muted);letter-spacing:1px}
+.tf{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:2px dashed var(--line)}
+.tf:first-child{border-top:0;padding-top:0}
+.tf .st{flex:1;min-width:0;font-weight:700}
+.tf .st small{display:block;font-weight:500;color:var(--muted);margin-top:4px}
+.tfb{display:flex;gap:8px;flex:none}
+.tfb button{width:52px;height:52px;border-radius:50%;border:3px solid var(--line);background:var(--paper);font:800 15px var(--f-body);cursor:pointer;color:var(--ink)}
+.tfb button.ok{border-color:var(--leaf);background:var(--leaf-soft)}
+.tfb button.no{border-color:var(--bad);opacity:.5}
+.tfb button:disabled{cursor:default}
+.bank-unused{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:2px dashed var(--sun);border-radius:14px;background:var(--sun-soft)}
+.chip{font:800 15px var(--f-body);background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer}
+.chip.used{opacity:.35;text-decoration:line-through;cursor:default}
+.fl{padding-top:12px;border-top:2px dashed var(--line);font-weight:700;line-height:2.1}
+.fl:first-child{border-top:0;padding-top:0}
+.blank{display:inline-block;min-width:110px;padding:0 12px;border:0;border-bottom:3px solid var(--muted);background:var(--bg);color:var(--ink);font:800 16px/1.8 var(--f-body);border-radius:8px 8px 0 0;cursor:pointer;vertical-align:baseline}
+.blank.act{border-bottom-color:var(--sun);background:var(--sun-soft)}
+.blank.done{border-bottom-color:var(--leaf);background:var(--leaf-soft);color:var(--leaf);cursor:default}
+@media (max-width:420px){.tf{flex-direction:column;align-items:stretch}.tfb{justify-content:flex-end}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body style="margin:0">
+<div id="top">
+  <div class="strip" id="stripName"></div>
+  <div class="bar"><b>Unit 4 · Reading</b><span class="score" id="score">⭐ 0 / 7</span></div>
+</div>
+
+<main>
+  <header class="hero">
+    <span class="unit">Unit 4</span>
+    <h1>My Birthday Party</h1>
+    <span class="cbadge" id="badgeName"></span>
+    <p class="lead">Đọc bài, bấm vào <b>từ gạch chấm</b> để xem nghĩa, rồi làm 2 bài bên dưới.</p>
+  </header>
+
+  <section class="card">
+    <div class="sh"><span class="num">📖</span><div><h2>Read the text.</h2><p class="vi">Đọc bài văn. Bấm 🔊 để nghe đọc mẫu.</p></div></div>
+    <div class="tools" id="ttsTools" hidden>
+      <button class="btn solid" id="readAll">🔊 Nghe cả bài</button>
+      <button class="btn" id="stopRead">⏹ Dừng</button>
+    </div>
+    <div class="passage" id="passage">
+      <p><span class="s" id="s1">My birthday is in June.</span> <span class="s" id="s2">And on my birthday, I want to have a <button class="w" data-w="fantastic">fantastic</button> party.</span> <span class="s" id="s3">In June, the weather is warm and sunny, perfect for a birthday <button class="w" data-w="celebration">celebration</button>.</span> <span class="s" id="s4">For my party, I want to have <button class="w" data-w="delicious">delicious</button> <button class="w" data-w="snacks">snacks</button> like chips and grapes.</span> <span class="s" id="s5">They're so tasty!</span></p>
+      <p><span class="s" id="s6">I'll <button class="w" data-w="decorate">decorate</button> the party with colorful <button class="w" data-w="balloons">balloons</button>, <button class="w" data-w="streamers">streamers</button>, and a big birthday <button class="w" data-w="banner">banner</button>.</span> <span class="s" id="s7">It will look <button class="w" data-w="festive">festive</button> and fun.</span> <span class="s" id="s8">The cake will be extra special.</span> <span class="s" id="s9">I love <button class="w" data-w="strawberry jam">strawberry jam</button>, so I want a cake with a yummy jam <button class="w" data-w="filling">filling</button>.</span> <span class="s" id="s10">I'll also have <button class="w" data-w="refreshing">refreshing</button> drinks like fruit juice, <button class="w" data-w="lemonade">lemonade</button>, or water.</span> <span class="s" id="s11">I'll <button class="w" data-w="invite">invite</button> all my friends to the party.</span> <span class="s" id="s12">We'll play games, dance, and have a great time together.</span> <span class="s" id="s13">At the end of the party, we'll take a nice photo together and I'll say thank you to all my friends.</span></p>
+      <p><span class="s" id="s14">That will be my birthday party in June with delicious snacks, a jam-filled cake, colorful decorations, and lots of fun with friends.</span></p>
+    </div>
+    <div class="tip" id="tip">💡 Bấm vào một từ có gạch chấm để xem nghĩa tiếng Việt.</div>
+  </section>
+
+  <section class="card" id="part1">
+    <div class="sh"><span class="num">1</span><div><h2>Answer these questions.</h2><p class="vi">Đọc và trả lời câu hỏi. Chọn câu trả lời đúng — đúng rồi sẽ hiện câu trả lời đầy đủ để em chép vào vở.</p></div></div>
+    <div id="qs"></div>
+  </section>
+
+  <section class="card" id="part2">
+    <div class="sh"><span class="num">2</span><div><h2>Choose the correct answer to fill in the blanks.</h2><p class="vi">Chọn đáp án đúng (a, b hoặc c) để điền vào chỗ trống.</p></div></div>
+    <div id="qs2"></div>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <h2>🎉 Well done!</h2>
+    <div class="big" id="rScore">7 / 7</div>
+    <p style="margin:0" id="rFirst"></p>
+    <p style="margin:0;font-weight:700" id="rMsg"></p>
+    <span class="cbadge" id="resultName"></span>
+    <button class="btn solid" id="again">🔁 Làm lại</button>
+  </section>
+
+  <footer id="foot"></footer>
+</main>
+
+<script>
+const CENTER = "QUEEN ENGLISH CENTER";
+const UNIT = "Unit 4 · My Birthday Party";
+const TOTAL = 7;
+document.getElementById("stripName").textContent = "👑 " + CENTER;
+document.getElementById("badgeName").textContent = "👑 " + CENTER;
+document.getElementById("resultName").textContent = "👑 " + CENTER + " · " + UNIT;
+document.getElementById("foot").textContent = CENTER + " · " + UNIT;
+
+const VOCAB = {
+  "fantastic":"tuyệt vời","celebration":"buổi tiệc mừng","delicious":"ngon","snacks":"đồ ăn vặt",
+  "decorate":"trang trí","balloons":"bóng bay","streamers":"dây kim tuyến trang trí","banner":"băng rôn",
+  "festive":"rộn ràng, không khí lễ hội","strawberry jam":"mứt dâu tây","filling":"nhân bánh",
+  "refreshing":"mát lạnh, sảng khoái","lemonade":"nước chanh","invite":"mời"
+};
+const tip = document.getElementById("tip");
+const hasTTS = "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+function say(t){ if(!hasTTS) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang="en-US"; u.rate=.85; speechSynthesis.speak(u); }
+document.querySelectorAll(".w").forEach(b=>b.addEventListener("click",()=>{
+  const w=b.dataset.w; tip.innerHTML = "💡 <b>"+w+"</b> = "+VOCAB[w]; say(w);
+}));
+if(hasTTS){
+  document.getElementById("ttsTools").hidden=false;
+  document.getElementById("readAll").onclick=()=>say(document.getElementById("passage").innerText);
+  document.getElementById("stopRead").onclick=()=>speechSynthesis.cancel();
+}
+
+const QS = [
+  {q:"1. When is your birthday?", hl:["s1"],
+   opts:["My birthday is in May.","My birthday is in June.","My birthday is in July."], a:1,
+   full:"My birthday is in June.", vi:"Sinh nhật của em vào tháng Sáu."},
+  {q:"2. What delicious snacks do you want for your party?", hl:["s4"],
+   opts:["I want pizza and candy.","I want cake and ice cream.","I want chips and grapes."], a:2,
+   full:"I want chips and grapes.", vi:"Em muốn có khoai tây chiên và nho."},
+  {q:"3. What refreshing drinks do you want to have at the party?", hl:["s10"],
+   opts:["Fruit juice, lemonade, or water.","Milk and tea.","Coffee and soda."], a:0,
+   full:"I want fruit juice, lemonade, or water.", vi:"Em muốn có nước ép trái cây, nước chanh hoặc nước lọc."},
+  {q:"4. What will you do at the end of the party?", hl:["s13"],
+   opts:["We'll go to sleep.","We'll take a nice photo together and I'll say thank you to all my friends.","We'll decorate the party."], a:1,
+   full:"We'll take a nice photo together and I'll say thank you to all my friends.", vi:"Chúng em sẽ chụp một tấm ảnh đẹp cùng nhau và em sẽ cảm ơn tất cả các bạn."}
+];
+const QS2 = [
+  {q:"1. In ______, the weather is warm and sunny.", hl:["s3"], fixed:true,
+   opts:["April","June","May"], a:1,
+   full:"In June, the weather is warm and sunny.", vi:"Vào tháng Sáu, thời tiết ấm áp và có nắng."},
+  {q:"2. I love strawberry jam, so I want a ______ with a yummy jam filling.", hl:["s9"], fixed:true,
+   opts:["cake","bike","banana"], a:0,
+   full:"I love strawberry jam, so I want a cake with a yummy jam filling.", vi:"Em thích mứt dâu nên em muốn một chiếc bánh có nhân mứt thật ngon."},
+  {q:"3. We'll ______, dance, and have a great time together.", hl:["s12"], fixed:true,
+   opts:["sleep","sing","play games"], a:2,
+   full:"We'll play games, dance, and have a great time together.", vi:"Chúng em sẽ chơi trò chơi, nhảy múa và có khoảng thời gian thật vui."}
+];
+
+let S;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function updScore(){document.getElementById("score").textContent="⭐ "+S.done+" / "+TOTAL}
+function shake(el){el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake")}
+function clearHL(){document.querySelectorAll(".s.hl").forEach(x=>x.classList.remove("hl"))}
+function hl(ids){clearHL();ids.forEach(id=>document.getElementById(id).classList.add("hl"))}
+
+function buildQs(L=QS,id="qs"){
+  const box=document.getElementById(id); box.innerHTML="";
+  L.forEach(Q=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML='<div class="qt">'+Q.q+'</div><div class="opts"></div><div class="ans"></div>';
+    const opts=d.querySelector(".opts"), ans=d.querySelector(".ans");
+    let tries=0;
+    (Q.fixed?(a=>a):shuffle)(Q.opts.map((t,i)=>({t,i}))).forEach((o,k)=>{
+      const b=document.createElement("button"); b.className="opt";
+      b.innerHTML='<span class="l">'+"abc"[k]+'</span><span>'+o.t+'</span>';
+      b.onclick=()=>{
+        if(o.i===Q.a){
+          b.classList.add("ok"); opts.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+          if(tries===0)S.first++; S.done++; updScore();
+          ans.innerHTML="✍️ "+Q.full+"<small>"+Q.vi+"</small>"; ans.classList.add("on");
+          hl(Q.hl); say(Q.full); check();
+        }else{
+          tries++; b.classList.add("no"); b.disabled=true; shake(b); hl(Q.hl);
+          tip.innerHTML="🔎 Gợi ý: đọc lại câu được <b>tô vàng</b> trong bài nhé!";
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+
+function buildTF(){ buildQs(QS2,"qs2"); }
+
+function check(){
+  if(S.done<TOTAL) return;
+  const r=document.getElementById("result"); r.hidden=false;
+  document.getElementById("rScore").textContent=TOTAL+" / "+TOTAL;
+  document.getElementById("rFirst").textContent="Đúng ngay lần đầu: "+S.first+" / "+TOTAL+" câu";
+  document.getElementById("rMsg").textContent =
+    S.first===TOTAL ? "Xuất sắc! Em đọc hiểu bài rất chắc. 🌟" :
+    S.first>=4 ? "Rất tốt! Em đã tìm đúng thông tin trong bài. 👏" :
+                 "Em đã cố gắng làm đến câu cuối cùng — thật đáng khen! 💪";
+  say("Well done!");
+  setTimeout(()=>r.scrollIntoView({behavior:"smooth",block:"center"}),400);
+}
+function start(){
+  S={done:0,first:0};
+  document.getElementById("result").hidden=true; clearHL(); updScore();
+  tip.innerHTML="💡 Bấm vào một từ có gạch chấm để xem nghĩa tiếng Việt.";
+  buildQs(); buildTF();
+}
+document.getElementById("again").onclick=()=>{start();scrollTo({top:0,behavior:"smooth"})};
+start();
+</script>
+
+</body>
+</html>
